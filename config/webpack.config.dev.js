@@ -33,6 +33,7 @@ module.exports = {
             {
                 test: /\.(js|jsx)$/,
                 include: paths.appSrc,
+                exclude: /node_modules/,
                 use: 'babel-loader'
             },
             {
@@ -52,6 +53,9 @@ module.exports = {
     },
     // 自动匹配扩展名
     resolve: {
-        extensions: ['.js','.jsx']
+        extensions: ['.js','.jsx'],
+        alias: {
+            '@utils': path.resolve(__dirname, '../src/utils'),
+        }
     }
 };
