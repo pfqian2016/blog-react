@@ -4,6 +4,7 @@ const htmlWebpackPlugin = require('html-webpack-plugin');
 const cleanWebpackPlugin = require('clean-webpack-plugin');
 const miniCssExtractPlugin = require('mini-css-extract-plugin');
 const optimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const terserWebpackPlugin = require('terser-webpack-plugin');
 
 module.exports = {
     mode: 'production',
@@ -19,7 +20,7 @@ module.exports = {
             filename: 'assets/css/[name].[contenthash:8].css'
         }),
         new cleanWebpackPlugin(['build'], {
-            root: path.resolve(__dirname, '../'),
+            root: paths.appProj,
         }),
         new htmlWebpackPlugin({
             template: paths.appHtml
@@ -27,8 +28,19 @@ module.exports = {
     ],
     optimization: {
         minimizer: [
+            // 压缩js 文件
+            new terserWebpackPlugin({
+                cache:true,
+                parallel: true,
+                sourceMap: true,
+                terserOptions: {
+                    output: {
+                        comments: false
+                    }
+                }
+            }),
             // 压缩css文件
-            new optimizeCssAssetsPlugin({})
+            new optimizeCssAssetsPlugin({}),
         ]
     },
     module: {

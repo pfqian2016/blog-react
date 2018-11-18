@@ -1,3 +1,7 @@
+'use strict';
+
+process.env.NODE_ENV = 'development';
+
 const webpackDevServer = require('webpack-dev-server');
 const webpackConfig = require('../config/webpack.config.dev');
 const webpack = require('webpack');
@@ -12,7 +16,6 @@ const compiler = webpack(webpackConfig);
 const HOST = process.env.HOST || '0.0.0.0';
 const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
 const urls = prepareUrls(protocol, HOST, 3000);
-
 const devServer = new webpackDevServer(compiler, devServerConfig);
 
 devServer.listen(3000, HOST, err => {
