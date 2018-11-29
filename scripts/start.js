@@ -12,6 +12,8 @@ const {
     prepareUrls
 } = require('react-dev-utils/WebpackDevServerUtils');
 
+webpackDevServer.addDevServerEntrypoints(webpackConfig, devServerConfig);
+
 const compiler = webpack(webpackConfig);
 const HOST = process.env.HOST || '0.0.0.0';
 const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';

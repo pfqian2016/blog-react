@@ -5,6 +5,7 @@ const cleanWebpackPlugin = require('clean-webpack-plugin');
 const miniCssExtractPlugin = require('mini-css-extract-plugin');
 const optimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const terserWebpackPlugin = require('terser-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
     mode: 'production',
@@ -12,7 +13,7 @@ module.exports = {
         app: paths.appIndexJs
     },
     output: {
-        filename: '[name].bundle.[hash:8].js',
+        filename: '[name].bundle.[chunkhash:8].js',
         path: paths.appBuild
     },
     plugins: [
@@ -24,6 +25,9 @@ module.exports = {
         }),
         new htmlWebpackPlugin({
             template: paths.appHtml
+        }),
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify('production')
         })
     ],
     optimization: {
@@ -41,7 +45,17 @@ module.exports = {
             }),
             // 压缩css文件
             new optimizeCssAssetsPlugin({}),
-        ]
+        ],
+        splitChunks: {
+            // chunks: 'all'
+            cacheGroups: {
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all'
+                }
+            }
+        }
     },
     module: {
         rules: [
